@@ -20,12 +20,11 @@ window.onload = function() {
     src.connect(analyser);
     analyser.connect(context.destination);
 
+    analyser.fftSize = 4096;
+    
     analyser.smoothingTimeConstant = 0.7;
 
-    analyser.fftSize = 4096;
-
     var bufferLength = analyser.frequencyBinCount;
-    console.log(bufferLength);
 
     var dataArray = new Uint8Array(bufferLength);
 

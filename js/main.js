@@ -48,7 +48,7 @@ window.onload = function() {
       var bv = 0
       var ml = bufferLength * 8 / 256
       var mv = 0
-      var hl = bufferLength * 32 / 256
+      var hl = bufferLength * 48 / 256
       var hv = 0
 
 
@@ -76,7 +76,7 @@ window.onload = function() {
       hue += 0.5;
 
       // hue, sat, val
-      ctx.fillStyle = `hsl(${(hue + hv * 90/255)%360},${mv * 100/255}%,${bv * 100/255}%)`;
+      ctx.fillStyle = `hsl(${(hue + mv * 90/255)%360},${Math.max(Math.min(100, hv * 2.5 * 100/255 - 30), 0)}%,${bv * 100/255}%)`;
       ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
       for (var i = 0; i < bufferLength; i++) {

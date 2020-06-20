@@ -37,8 +37,8 @@ window.onload = function() {
     var hue = 0;
 
     const particleCount = 100;
-    const particleRadius = 8;
-    const moveSpeed = 10;
+    const particleRadius = 6;
+    const moveSpeed = 12;
 
     var particles = [];
     for (var i = 0; i < particleCount; i++) {
@@ -83,22 +83,32 @@ window.onload = function() {
       //   dataArray.set([0], i)
       // }
 
-      bv /= bl;
-      mv /= ml;
-      hv /= hl;
+      bv /= bl * 255;
+      bv = bv * bv * bv * bv * 1.25;
+      bv = Math.min(bv, 1)
+
+      mv /= ml * 255;
+      mv = mv * mv * mv * 1.5;
+      mv = Math.min(mv, 1)
+
+      hv /= hl * 255;
+      hv = hv * hv * 1.25;
+      hv = Math.min(hv, 1)
+
+      console.log(hv)
 
       hue += 0.5;
 
       // hue, sat, val
-      ctx.fillStyle = `hsl(${(hue + mv * 90/255)%360},${Math.max(Math.min(100, hv * 2.5 * 100/255 - 30), 0)}%,${bv * 100/255}%)`;
+      ctx.fillStyle = `hsl(${(hue + mv * 90)%360},${Math.max(Math.min(100, hv * 2.5 * 100 - 30), 0)}%,${bv * 100}%)`;
       ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
       for (var i = 0; i < bufferLength; i++) {
-        barHeight = dataArray[i];
+        barHeight = dataArray[i] / 255;
 
         var h = 180 * (i / bufferLength);
-        var s = barHeight * 100 / 255;
-        var v = 40 + (barHeight + (25 * (i / bufferLength))) * 20 / 255;
+        var s = barHeight * 100;
+        var v = 40 + (barHeight * 255 + (25 * (i / bufferLength))) * 20 / 255;
 
         barHeight = dataArray[i] / 255 * HEIGHT * 2 / 3;
 
@@ -109,13 +119,13 @@ window.onload = function() {
       }
 
       // Particles
-      ctx.fillStyle = `hsla(${(hue + mv * 90/255)%360},${Math.max(Math.min(100, mv * 1.5 * 100/255), 0)}%,${100 - bv * 50/255}%, ${hv * 100 / 255}%)`;
+      ctx.fillStyle = `hsla(${(hue + mv * 90)%360},${Math.max(Math.min(100, mv * 1.5 * 100), 0)}%,${100 - bv * 50}%, ${hv * 100 }%)`;
       particles.forEach(function(p) {
         ctx.beginPath();
-        ctx.arc(p.x, p.y, particleRadius * bv / 255, 0, 2 * Math.PI);
+        ctx.arc(p.x, p.y, particleRadius * bv, 0, 2 * Math.PI);
         ctx.fill();
-        p.x += p.mx * (bv / 255);
-        p.y += p.my * (bv / 255);
+        p.x += p.mx * bv;
+        p.y += p.my * bv;
         if (p.x < 0 || p.x >= WIDTH)
           p.mx *= -1;
         if (p.y < 0 || p.y >= HEIGHT)

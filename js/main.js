@@ -21,7 +21,7 @@ window.onload = function() {
     analyser.connect(context.destination);
 
     analyser.fftSize = 4096;
-    
+
     analyser.smoothingTimeConstant = 0.7;
 
     var bufferLength = analyser.frequencyBinCount;
@@ -35,6 +35,21 @@ window.onload = function() {
     var barHeight;
     var x = 0;
     var hue = 0;
+
+    const particleCount = 100;
+    const particleRadius = 8;
+    const moveSpeed = 10;
+
+    var particles = [];
+    for (var i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * WIDTH,
+        y: Math.random() * HEIGHT,
+        mx: (Math.random() - 0.5) * moveSpeed,
+        my: (Math.random() - 0.5) * moveSpeed
+      })
+    }
+    console.log(particles);
 
     function renderFrame() {
       requestAnimationFrame(renderFrame);
@@ -92,6 +107,20 @@ window.onload = function() {
 
         x += barWidth + 1;
       }
+
+      // Particles
+      ctx.fillStyle = `hsla(${(hue + mv * 90/255)%360},${Math.max(Math.min(100, mv * 1.5 * 100/255), 0)}%,${100 - bv * 50/255}%, ${hv * 100 / 255}%)`;
+      particles.forEach(function(p) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, particleRadius * bv / 255, 0, 2 * Math.PI);
+        ctx.fill();
+        p.x += p.mx * (bv / 255);
+        p.y += p.my * (bv / 255);
+        if (p.x < 0 || p.x >= WIDTH)
+          p.mx *= -1;
+        if (p.y < 0 || p.y >= HEIGHT)
+          p.my *= -1;
+      })
     }
 
     audio.play();

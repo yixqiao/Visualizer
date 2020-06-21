@@ -1,8 +1,32 @@
-#audio-file {
+body{
+  margin: 0;
+}
+
+#interface {
+  width: 100%;
+  z-index: 10;
+  overflow: hidden;
+  white-space: nowrap;
+  background-color: #111;
+  color: white !important;
   position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 100;
+}
+
+#interface div{
+  overflow: visible;
+  display: inline-block;
+  position: relative;
+  bottom: 5px;
+}
+
+#audio-file {
+  z-index: 11;
+}
+
+audio {
+  width: 80%;
+  z-index: 11;
+  position: relative;
 }
 
 #canvas {
@@ -11,11 +35,5 @@
   top: 0;
   width: 100%;
   height: 100%;
-}
-
-audio {
-  position: fixed;
-  right: 10px;
-  top: 10px;
-  width: calc(80%);
+  z-index: 0;
 }

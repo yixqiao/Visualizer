@@ -1,9 +1,23 @@
 window.onload = function() {
+  document.onkeypress = function(e) {
+    e = e || window.event;
+    if (e.key === 'c') {
+      var intf = document.getElementById('interface');
+      if (intf.style.display !== 'none') {
+        intf.style.display = 'none';
+      } else {
+        intf.style.display = 'block';
+      }
+    }
+  };
+
 
   var file = document.getElementById("audio-file");
   var audio = document.getElementById("audio");
 
   file.onchange = function() {
+    document.getElementById('interface').style.display = 'none';
+
     var files = this.files;
     audio.src = URL.createObjectURL(files[0]);
     audio.load();

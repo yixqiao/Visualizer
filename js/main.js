@@ -36,9 +36,9 @@ window.onload = function() {
     var x = 0;
     var hue = 0;
 
-    const particleCount = 100;
-    const particleRadius = 6;
-    const moveSpeed = 12;
+    const particleCount = 250;
+    const particleRadius = 5;
+    const moveSpeed = 20;
 
     var particles = [];
     for (var i = 0; i < particleCount; i++) {
@@ -92,7 +92,7 @@ window.onload = function() {
       mv = Math.min(mv, 1)
 
       hv /= hl * 255;
-      hv = hv * hv * 1.25;
+      hv = hv * hv * 2;
       hv = Math.min(hv, 1)
 
       console.log(hv)
@@ -100,7 +100,7 @@ window.onload = function() {
       hue += 0.5;
 
       // hue, sat, val
-      ctx.fillStyle = `hsl(${(hue + mv * 90)%360},${Math.max(Math.min(100, hv * 2.5 * 100 - 30), 0)}%,${bv * 100}%)`;
+      ctx.fillStyle = `hsl(${(hue + mv * 90)%360},${Math.max(Math.min(100, hv * 2 * 100 - 30), 0)}%,${bv * 100}%)`;
       ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
       for (var i = 0; i < bufferLength; i++) {
@@ -119,7 +119,7 @@ window.onload = function() {
       }
 
       // Particles
-      ctx.fillStyle = `hsla(${(hue + mv * 90)%360},${Math.max(Math.min(100, mv * 1.5 * 100), 0)}%,${100 - bv * 50}%, ${hv * 100 }%)`;
+      ctx.fillStyle = `hsla(${(hue + mv * 90)%360},${Math.max(Math.min(100, mv * 1.2 * 100), 0)}%,${100 - bv * 40}%, ${hv * 100}%)`;
       particles.forEach(function(p) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, particleRadius * bv, 0, 2 * Math.PI);
